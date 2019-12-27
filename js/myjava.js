@@ -46,7 +46,12 @@ myServer.onreadystatechange = function () {
             cartImg.src="./shopping-cart.png"
             cartImg.alt="shopping cart image"
             cartImg.style.float="right";
-            cartImg.onclick = function() { alert('blah'); };
+            let product = {
+                name: data[i].Name,
+                price: data[i].Price,
+                imgSrc:data[i].ProductPicUrl
+            };
+            cartImg.addEventListener('click', addToCart);
 
             productBodyDiv.appendChild(productName);
             productBodyDiv.appendChild(productPrice);
@@ -57,3 +62,23 @@ myServer.onreadystatechange = function () {
         }
     }
 };
+
+function addToCart(e){
+
+    let tar = e.target;
+     let parent = tar.parentElement;
+     let imgSrc = parent.parentElement .getElementsByClassName('card-img-top')[0].src; 
+     let prouctBody = parent.innerText;
+     let productData = prouctBody.split("$");;
+     
+    let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    let product = {
+        name: productData[0].trim(),
+        price:productData[1].trim(),
+        imgSrc:imgSrc
+    };
+    cartItems.push(product);
+
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+}
