@@ -1,84 +1,97 @@
-let mylist = document.getElementById("products")
+window.onload = function () {
+    let mylist = document.getElementById("products")
+    homeCart();
+    let myServer = new XMLHttpRequest();
+    myServer.open("get", "https://gist.githubusercontent.com/a7med-hussien/7fc3e1cba6abf92460d69c0437ce8460/raw/da46abcedf99a3d2bef93a322641926ff60db3c3/products.json");
+    myServer.send();
 
-var myServer = new XMLHttpRequest();
+    myServer.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            let allData = JSON.parse(this.responseText);
+            let data = allData["ProductCollection"];
 
-myServer.open("get", "https://gist.githubusercontent.com/a7med-hussien/7fc3e1cba6abf92460d69c0437ce8460/raw/da46abcedf99a3d2bef93a322641926ff60db3c3/products.json");
-
-myServer.send();
-
-myServer.onreadystatechange = function () {
-    if (this.readyState == 4) {
-        let allData = JSON.parse(this.responseText);
-        let data = allData["ProductCollection"];
-
-            for(let i=0;i<data.length; i++){
+            for (let i = 0; i < data.length; i++) {
                 let productDiv = document.createElement("div");
-            productDiv.classList.add("card");
-            productDiv.classList.add("m-2");
-            productDiv.style.width="300px";
-            // product.style.borders="5px";
-            // product.style.borderColor="black"
+                productDiv.classList.add("card");
+                productDiv.classList.add("m-2");
+                productDiv.style.width = "300px";
 
-            let productImg = document.createElement("img");
-            productImg.src=data[i].ProductPicUrl;
-            productImg.alt=data[i].Name;
-            productImg.classList.add("card-img-top");
-            productImg.style.height="300px";
+                let productImg = document.createElement("img");
+                productImg.src = data[i].ProductPicUrl;
+                productImg.alt = data[i].Name;
+                productImg.classList.add("card-img-top");
+                productImg.style.height = "300px";
 
-            let productBodyDiv = document.createElement("div");
-            productBodyDiv.classList.add("card-body");
+                let productBodyDiv = document.createElement("div");
+                productBodyDiv.classList.add("card-body");
 
-            let productName = document.createElement("h4");
-            let productNameText =  document.createTextNode(data[i].Name);
-            productName.classList.add("card-title")
-            productName.classList.add("text-primary")
-            productName.appendChild(productNameText);
+                let productName = document.createElement("h4");
+                let productNameText = document.createTextNode(data[i].Name);
+                productName.classList.add("card-title")
+                productName.classList.add("text-primary")
+                productName.appendChild(productNameText);
 
-            
 
-            let productPrice = document.createElement("p");
-            let productPriceText = document.createTextNode("$"+data[i].Price)
-            productPrice.classList.add("text-danger")
-            productPrice.appendChild(productPriceText)
-            productPrice.style.display="inline-block"
+                let productPrice = document.createElement("p");
+                let productPriceText = document.createTextNode("$" + data[i].Price)
+                productPrice.classList.add("text-danger")
+                productPrice.appendChild(productPriceText)
+                productPrice.style.display = "inline-block"
 
-            let cartImg = document.createElement("img");
-            cartImg.src="./shopping-cart.png"
-            cartImg.alt="shopping cart image"
-            cartImg.style.float="right";
-            let product = {
-                name: data[i].Name,
-                price: data[i].Price,
-                imgSrc:data[i].ProductPicUrl
-            };
-            cartImg.addEventListener('click', addToCart);
+                let cartImg = document.createElement("img");
+                cartImg.src = "./shopping-cart.png"
+                cartImg.alt = "shopping cart image"
+                cartImg.style.float = "right";
+                cartImg.addEventListener('click', addToCart);
 
-            productBodyDiv.appendChild(productName);
-            productBodyDiv.appendChild(productPrice);
-            productBodyDiv.appendChild(cartImg);
-            productDiv.appendChild(productImg);
-            productDiv.appendChild(productBodyDiv);
-            mylist.appendChild(productDiv);
+                productBodyDiv.appendChild(productName);
+                productBodyDiv.appendChild(productPrice);
+                productBodyDiv.appendChild(cartImg);
+                productDiv.appendChild(productImg);
+                productDiv.appendChild(productBodyDiv);
+                mylist.appendChild(productDiv);
+            }
         }
-    }
-};
-
-function addToCart(e){
+    };
+}
+function addToCart(e) {
 
     let tar = e.target;
-     let parent = tar.parentElement;
-     let imgSrc = parent.parentElement .getElementsByClassName('card-img-top')[0].src; 
-     let prouctBody = parent.innerText;
-     let productData = prouctBody.split("$");;
-     
+    let parent = tar.parentElement;
+    let prouctBody = parent.innerText;
+    let productData = prouctBody.split("$");
+
+    let imgSrc = parent.parentElement.getElementsByClassName('card-img-top')[0].src;
+    let productName = productData[0].trim();
+    let productPrice = productData[1].trim();
+
     let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
-    let product = {
-        name: productData[0].trim(),
-        price:productData[1].trim(),
-        imgSrc:imgSrc
-    };
-    cartItems.push(product);
+    let check = cartItems.filter(function (item) { return item.name === productName; });
 
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    if (check.length == 0) {
+        let product = {
+            name: productName,
+            price: productPrice,
+            imgSrc: imgSrc
+        };
+        cartItems.push(product);
+
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        homeCart();
+    } else {
+        alert("This items Added Befor ");
+    }
+}
+
+function homeCart() {
+    let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    let productsNum = cartItems.length;
+    let productsPrice = 0;
+    cartItems.forEach(function (item) {
+        productsPrice += parseFloat(item.price);
+    });
+    document.getElementById("productsPrice").innerHTML = "$" + productsPrice;
+    document.getElementById("productsNum").innerHTML = productsNum;
+
 }
