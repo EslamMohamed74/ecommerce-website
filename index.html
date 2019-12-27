@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/mycss.css">
-    <title>Home Page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/mycss.css">
+  <title>Home Page</title>
 </head>
 
 <body>
@@ -31,13 +32,33 @@
 
   <section>
     <div class="container">
-      <div class="row justify-content-center" id="products">
+      <div class="row">
+        <div class="col-10">
+          <div class="row justify-content-center" id="products">
+
+          </div>
+        </div>
+        <div class="col-2">
+          <div style="background-color:rgb(236, 236, 236); position:fixed; top: 50%; border-radius: 20%; ">
+            <span style="padding: 20px; justify-content: space-around;">
+              <span style=" background-color: yellow; border-radius: 50%; margin: 5px;">
+                <p class="d-inline-block " id="productsNum"></p>
+              </span>
+              <span>
+                <p class="d-inline-block m-1" id="productsPrice"></p>
+              </span>
+
+              <img src="shopping-cart.png" alt="">
+              <a href="#">Checkout</a>
+            </span>
+          </div>
+        </div>
 
       </div>
-    </div>
 
 
     </div>
+
   </section>
   <script src="js/jquery.js"></script>
   <script src="js/myjava.js"></script>
