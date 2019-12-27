@@ -1,35 +1,3 @@
-// var forms = document.forms;
-// var contactForm = forms["myForm"];
-
-// contactForm.addEventListener("submit", function (event) {
-
-//     event.preventDefault();
-
-//     var data = {
-//         name: this.name.value,
-//         email: this.email.value,
-//         subject: this.subject.value,
-//         message: this.message.value
-//     };
-
-
-//     var postServer = new XMLHttpRequest();
-
-
-//     postServer.open("POST", "http://js.vacsera.com/api/final-project");
-
-
-//     postServer.setRequestHeader("Content-Type", "application/json");
-//     postServer.send(JSON.stringify(data));
-
-
-//     postServer.onreadystatechange = function () {
-//         if (this.readyState == 4) {
-//             console.log(this.responseText);
-//         }
-//     };
-// });
-
 let mylist = document.getElementById("products")
 
 var myServer = new XMLHttpRequest();
@@ -42,15 +10,6 @@ myServer.onreadystatechange = function () {
     if (this.readyState == 4) {
         let allData = JSON.parse(this.responseText);
         let data = allData["ProductCollection"];
-
-        {/* <div class="card" style="width:400px">
-            <img class="card-img-top" src="img_avatar1.png" alt="Card image">
-                <div class="card-body">
-                    <h4 class="card-title">John Doe</h4>
-                    <p class="card-text">Some example text.</p>
-                    <a href="#" class="btn btn-primary">See Profile</a>
-                </div>
-        </div> */}
 
             for(let i=0;i<data.length; i++){
                 let productDiv = document.createElement("div");
