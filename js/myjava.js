@@ -9,18 +9,22 @@ window.onload = function () {
         if (this.readyState == 4) {
             let allData = JSON.parse(this.responseText);
             let data = allData["ProductCollection"];
-
+            localStorage.setItem("allProucts", JSON.stringify(data));
             for (let i = 0; i < data.length; i++) {
                 let productDiv = document.createElement("div");
                 productDiv.classList.add("card");
                 productDiv.classList.add("m-2");
                 productDiv.style.width = "300px";
 
+                let viewProduct = document.createElement("a");
+                viewProduct.href = "viewProduct.html?id="+data[i].ProductId;
                 let productImg = document.createElement("img");
                 productImg.src = data[i].ProductPicUrl;
                 productImg.alt = data[i].Name;
                 productImg.classList.add("card-img-top");
                 productImg.style.height = "300px";
+
+                viewProduct.appendChild(productImg);
 
                 let productBodyDiv = document.createElement("div");
                 productBodyDiv.classList.add("card-body");
@@ -47,7 +51,7 @@ window.onload = function () {
                 productBodyDiv.appendChild(productName);
                 productBodyDiv.appendChild(productPrice);
                 productBodyDiv.appendChild(cartImg);
-                productDiv.appendChild(productImg);
+                productDiv.appendChild(viewProduct);
                 productDiv.appendChild(productBodyDiv);
                 mylist.appendChild(productDiv);
             }
@@ -73,23 +77,29 @@ function addToCart(e) {
         let product = {
             name: productName,
             price: productPrice,
-            imgSrc: imgSrc
+            imgSrc: imgSrc,
+            quantity: 1
         };
         cartItems.push(product);
 
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
         homeCart();
     } else {
-        alert("This items Added Befor ");
+       // alert("This items Added Befor ");
+        let prouchtIndex = cartItems.findIndex(product => product.name === productName);
+        cartItems[prouchtIndex].quantity +=1;
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        homeCart();
     }
 }
 
 function homeCart() {
     let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-    let productsNum = cartItems.length;
+    let productsNum = 0;
     let productsPrice = 0;
     cartItems.forEach(function (item) {
-        productsPrice += parseFloat(item.price);
+        productsPrice += (parseFloat(item.price)*item.quantity);
+        productsNum += item.quantity;
     });
     document.getElementById("productsPrice").innerHTML = "$" + productsPrice;
     document.getElementById("productsNum").innerHTML = productsNum;
