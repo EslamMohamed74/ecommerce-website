@@ -46,6 +46,7 @@ window.onload = function () {
                 cartImg.src = "./shopping-cart.png"
                 cartImg.alt = "shopping cart image"
                 cartImg.style.float = "right";
+                cartImg.style.cursor = 'pointer';
                 cartImg.addEventListener('click', addToCart);
 
                 productBodyDiv.appendChild(productName);
