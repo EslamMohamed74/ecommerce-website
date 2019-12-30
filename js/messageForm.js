@@ -15,7 +15,7 @@ contactForm.addEventListener("submit", function (event) {
     var postServer = new XMLHttpRequest();
 
 
-    postServer.open("POST", "http://js.vacsera.com/api/final-project",true);
+    postServer.open("POST", "https://afternoon-falls-30227.herokuapp.com/api/v1/contact_us?fbclid=IwAR0zwgmMOhHa5RF3kq15icXBytn3TE3gqdk26WFGbE_IkMM8sZ3_l4zPl50",true);
 
 
     postServer.setRequestHeader("Content-Type", "application/json");
