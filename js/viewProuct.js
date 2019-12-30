@@ -92,6 +92,38 @@ window.onload = function () {
     inButton.appendChild(toCartButtonText);
 
     toCartButton.appendChild(inButton);
+    toCartButton.addEventListener('click', addToCart);
     productCart.appendChild(toCartButton);
 
+}
+
+function addToCart() {
+    let productName = document.getElementById("productName").innerHTML;
+    let inputQuantity = parseInt(document.getElementById("inputQuantity").value);
+
+    let allProduct = JSON.parse(localStorage.getItem("allProucts") || "[]");
+    let productToAdd = allProduct.find(proudct => proudct.Name == productName);
+    
+     let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    let check = cartItems.filter(function (item) { return item.name === productName; });
+
+    if (check.length == 0) {
+        let product = {
+            name: productToAdd.Name,
+            price: productToAdd.Price,
+            imgSrc: productToAdd.ProductPicUrl,
+            quantity: inputQuantity
+        };
+        cartItems.push(product);
+
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        alert("Product Added");
+    } else {
+       // alert("This items Added Befor ");
+        let prouchtIndex = cartItems.findIndex(product => product.name === productName);
+        cartItems[prouchtIndex].quantity +=inputQuantity;
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        alert("Product Added");
+    } 
 }
