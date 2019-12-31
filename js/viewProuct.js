@@ -84,7 +84,7 @@ window.onload = function () {
     let inButton = document.createElement("span");
 
     let cartImg = document.createElement("img");
-    cartImg.src = "./shopping-cart.png"
+    cartImg.src = "../images/shopping-cart.png"
     cartImg.alt = "shopping cart image"
     cartImg.style.paddingRight = "10px"
     inButton.appendChild(cartImg);

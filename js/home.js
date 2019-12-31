@@ -17,7 +17,7 @@ window.onload = function () {
                 productDiv.style.width = "300px";
 
                 let viewProduct = document.createElement("a");
-                viewProduct.href = "viewProduct.html?id="+data[i].ProductId;
+                viewProduct.href = "pages/viewProduct.html?id="+data[i].ProductId;
                 let productImg = document.createElement("img");
                 productImg.src = data[i].ProductPicUrl;
                 productImg.alt = data[i].Name;
@@ -43,7 +43,7 @@ window.onload = function () {
                 productPrice.style.display = "inline-block"
 
                 let cartImg = document.createElement("img");
-                cartImg.src = "./shopping-cart.png"
+                cartImg.src = "images/shopping-cart.png"
                 cartImg.alt = "shopping cart image"
                 cartImg.style.float = "right";
                 cartImg.style.cursor = 'pointer';
