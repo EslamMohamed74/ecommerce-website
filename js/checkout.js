@@ -40,6 +40,7 @@ window.onload = function () {
         inputQuantity.min = 1;
         inputQuantity.value = item.quantity;
         inputQuantity.style.borderRadius = "10px";
+        inputQuantity.addEventListener("change",updateTotaProuctPricel);
         productQuantityCol.appendChild(inputQuantity);
         trTable.appendChild(productQuantityCol);
 
@@ -58,10 +59,60 @@ window.onload = function () {
         removeButton.classList.add("btn");
         removeButton.classList.add("btn-danger");
         removeButton.innerHTML = "Remove";
+        removeButton.addEventListener("click",removeCartItem);
         removeProductCol.appendChild(removeButton);
         trTable.appendChild(removeProductCol);
         tableBody.appendChild(trTable);
     });
-
+    updateCartTotalPrice();
 } 
 
+function updateTotaProuctPricel(e){
+    let tar = e.target;
+    let parent = tar.parentElement.parentElement;
+    let productPrice =parseFloat(parent.getElementsByClassName("productPrice")[0].innerHTML.replace("$",""));
+    let totalProductPrice =parent.getElementsByClassName("totalProductPrice")[0];
+    totalProductPrice.innerHTML ="$"+ productPrice * tar.value;
+
+    let productName = parent.getElementsByClassName("productName")[0].innerHTML;
+    let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    let check = cartItems.filter(function (item) { return item.name === productName; });
+
+    if(check){
+        let prouchtIndex = cartItems.findIndex(product => product.name === productName);
+        cartItems[prouchtIndex].quantity =parseInt(tar.value);
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }else{
+        alert("Should Add Item To Cart");
+    }
+    updateCartTotalPrice();
+    
+}
+
+function updateCartTotalPrice(){
+    let cartRows = document.getElementsByClassName("cartRow");
+    let total =0;
+    let totalPrice = document.getElementById("totalPrice");
+
+    for(let i=0 ; i<cartRows.length; i++){
+        let cartRow = cartRows[i];
+        let productPrice =parseFloat(cartRow.getElementsByClassName("totalProductPrice")[0].innerHTML.replace("$",""));
+        total = total + productPrice;
+    }
+    totalPrice.innerHTML = "$"+total;
+
+}
+
+function removeCartItem(e){
+    let tar = e.target;
+    tar.parentElement.parentElement.remove();
+    updateCartTotalPrice();
+    let parent = tar.parentElement.parentElement;
+    let productName = parent.getElementsByClassName("productName")[0].innerHTML;
+    let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    let afterDelete = cartItems.filter(function (item) { return item.name !== productName; });
+
+    localStorage.setItem("cartItems", JSON.stringify(afterDelete));
+}
